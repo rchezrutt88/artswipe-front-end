@@ -1,2 +1,7 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+body {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #373a3c;
+}
