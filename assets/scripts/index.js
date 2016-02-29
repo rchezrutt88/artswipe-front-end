@@ -13,6 +13,20 @@ let artData;
 
 let userData;
 
+let parseImageUrl = function (rawUrl) {
+  let lessRaw = rawUrl.replace('/html/', '/art/').replace('.html', '.jpg')
+  return lessRaw
+}
+
+let postImage = function (rawUrl) {
+  let imageUrl = parseImageUrl(rawUrl);
+  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='20%' height='20%'>")
+}
+
+let clearImage = function() {
+  $(".image-container").empty();
+};
+
 let signUp = function(formData) {
   $.ajax({
     type: "POST",
@@ -35,22 +49,15 @@ let getRandomImage = function () {
     url: baseUrl + "/arts/random"
   }).done(function(responseData) {
     console.log(responseData)
+    artData = responseData.art
+    clearImage()
     postImage(responseData.art.url)
   }).fail(function(jqxhr) {
     console.error(jqxhr)
   });
 };
 
-let parseImageUrl = function (rawUrl) {
-  let lessRaw = rawUrl.replace('/html/', '/art/').replace('.html', '.jpg')
-  return lessRaw
-}
 
-
-let postImage = function (rawUrl) {
-  let imageUrl = parseImageUrl(rawUrl);
-  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='20%' height='20%'>")
-}
 
 
 
@@ -69,6 +76,5 @@ $("#signupForm").on('submit', function(event) {
   //let formData = new FormData(event.)
 });
 
-getRandomImage();
 
 });
