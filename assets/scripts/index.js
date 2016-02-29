@@ -35,6 +35,7 @@ let getRandomImage = function () {
     url: baseUrl + "/arts/random"
   }).done(function(responseData) {
     console.log(responseData)
+    postImage(responseData.art.url)
   }).fail(function(jqxhr) {
     console.error(jqxhr)
   });
@@ -48,7 +49,7 @@ let parseImageUrl = function (rawUrl) {
 
 let postImage = function (rawUrl) {
   let imageUrl = parseImageUrl(rawUrl);
-  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='50%' height='50%'>")
+  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='20%' height='20%'>")
 }
 
 
@@ -58,7 +59,7 @@ let postImage = function (rawUrl) {
 $(function() {
 
 $("#getImage").on('click', function() {
-  postImage("http://www.wga.hu/html/h/hitchcoc/thebride.html")
+  getRandomImage();
 });
 
 $("#signupForm").on('submit', function(event) {
