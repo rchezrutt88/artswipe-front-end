@@ -50,6 +50,14 @@ let signUp = function(formData) {
     data: formData,
   }).done(function(responseData) {
     console.log(responseData);
+
+    //automatically logs you in...
+    // formData.delete('credentials[password_confirmation]');
+    signIn(formData);
+
+    //hide modal
+    $("#signupModal").modal("hide");
+
   }).fail(function(jqxhr) {
     console.error(jqxhr);
   });
@@ -89,10 +97,7 @@ let signIn = function(formData) {
 
 
 let signOut = function() {
-  //REQUIRES A TOKEN HEADER
-  // if (!userData) {
-  //   throw "no user signed in"
-  // }
+
   console.log(userData.token);
   $.ajax({
     headers: {
@@ -103,15 +108,42 @@ let signOut = function() {
 
   }).done(function(responseData) {
     console.log(responseData);
-
     //remove user details from nav bar
     $("#leftBar").empty();
     //clear userData
     userData = undefined;
+
+
+
   }).fail(function(jQXHR) {
     console.log(jQXHR);
-  });
+  })
 };
+
+let likeArt = function() {
+  if (!userData) {
+    throw 'no user signed in';
+  }
+
+  $.ajax({
+    headers: {
+      Authorization: 'Token token=' + userData.token,
+    },
+    type: "POST",
+    url: baseUrl + '/arts/' + artData.id + '/votes',
+    data: {vote:{liked: true}}
+  }).done(function(responseData) {
+    console.log(responseData);
+  }).fail(function(jQXHR) {
+    console.error(jQXHR)
+  })
+};
+
+let dislikeArt = function() {
+  if (!userData) {
+    throw 'no user signed in';
+  }
+}
 
 
 
@@ -149,11 +181,8 @@ $("#signoutbtn").on('click', function() {
 });
 
 //on "like"
-$("likeButton").on('click', function() {
-
-})
+$("#likeButton").on('click', likeArt);
 //"on dislike"
-$("dislikeButton").on('click', function() {
+$("#dislikeButton").on('click', dislikeArt);
 
-})
 });
