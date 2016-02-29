@@ -148,6 +148,12 @@ $("#signoutbtn").on('click', function() {
   signOut();
 });
 
+//on "like"
+$("likeButton").on('click', function() {
 
+})
+//"on dislike"
+$("dislikeButton").on('click', function() {
 
+})
 });
