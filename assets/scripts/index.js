@@ -12,11 +12,17 @@ let getImageUrl = function (userID) {
   $.ajax()
 }
 
-let postImage = function (url) {
-
+let postImage = function (rawUrl) {
+  let imageUrl = parseImageUrl(rawUrl);
+  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='50%' height='50%'>")
 }
 
 let parseImageUrl = function (rawUrl) {
   let lessRaw = rawUrl.replace('/html/', '/art/').replace('.html', '.jpg')
   return lessRaw
 }
+
+
+$("#getImage").on('click', function() {
+  postImage("http://www.wga.hu/html/h/hitchcoc/thebride.html")
+});
