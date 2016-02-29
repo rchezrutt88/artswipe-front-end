@@ -120,6 +120,7 @@ let signOut = function() {
   })
 };
 
+//TODO Refactor likeArt() and dislikeArt() into one method
 let likeArt = function() {
   if (!userData) {
     throw 'no user signed in';
@@ -143,7 +144,19 @@ let dislikeArt = function() {
   if (!userData) {
     throw 'no user signed in';
   }
-}
+  $.ajax({
+    headers: {
+      Authorization: 'Token token=' + userData.token,
+    },
+    type: "POST",
+    url: baseUrl + '/arts/' + artData.id + '/votes',
+    data: {vote:{liked: false}}
+  }).done(function(responseData) {
+    console.log(responseData);
+  }).fail(function(jQXHR) {
+    console.error(jQXHR)
+  })
+};
 
 
 
