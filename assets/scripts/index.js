@@ -144,6 +144,11 @@ let signOut = function() {
 
 //TODO Refactor likeArt() and dislikeArt() into one method
 let likeArt = function() {
+
+  //TODO remember to put this jsquery after .done!
+  $("#likeButton").toggleClass("btn-success-outline").toggleClass("btn-success")
+
+
   if (!userData) {
     throw 'no user signed in';
   }
@@ -163,6 +168,8 @@ let likeArt = function() {
 };
 
 let dislikeArt = function() {
+  $("#dislikeButton").toggleClass("btn-danger-outline").toggleClass("btn-danger")
+
   if (!userData) {
     throw 'no user signed in';
   }
