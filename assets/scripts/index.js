@@ -41,6 +41,30 @@ let getRandomImage = function () {
   });
 };
 
+
+
+/*TODO
+add method for retrieving art by id! Get method! YAY?
+
+Should this reference the global artData varable or take an art id
+as an argument?
+*/
+let getVotesOnArt = function() {
+
+  $.ajax({
+    headers: {
+      Authorization: 'Token token=' + userData.token,
+    },
+    type: "GET",
+    url: baseUrl + '/arts/' + artData.id + '/votes'
+  }).done(function(responseData) {
+    console.log(responseData)
+  }).fail(function(jqxhr) {
+    console.error(jqxhr)
+  })
+};
+
+
 let signUp = function(formData) {
   $.ajax({
     type: "POST",
@@ -113,8 +137,6 @@ let signOut = function() {
     //clear userData
     userData = undefined;
 
-
-
   }).fail(function(jQXHR) {
     console.log(jQXHR);
   })
@@ -159,8 +181,6 @@ let dislikeArt = function() {
 };
 
 
-
-
 /*######################### EXECUTING CODE ###################################*/
 
 $(function() {
@@ -168,6 +188,9 @@ $(function() {
 $("#getImage").on('click', function() {
   getRandomImage();
 });
+
+//to retrieve votes on imageUrl
+$("#votesButton").on('click', getVotesOnArt);
 
 //for sign-up
 $("#signupForm").on('submit', function(event) {
