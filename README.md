@@ -11,4 +11,4 @@
 ## BACK END
 - [ ] Integrate karma gem:  [https://github.com/bouchard/thumbs_up](https://github.com/bouchard/thumbs_up)
 - [ ] Integrate face recognition API: [https://www.kairos.com/docs/api/#post-recognize](https://www.kairos.com/docs/api/#post-recognize)
-- [ ]Votes from `boolean` to `1 OR 0 OR -1`
+- [ ] Votes from `boolean` to `1 OR 0 OR -1`
