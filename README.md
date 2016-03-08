@@ -7,6 +7,7 @@
  - [ ] Standard size view portal that image zooms to with detected face.
  - [ ] Revamp navbar: `LOGO - - - - - - - - "email" login logout`
  - [ ] Change like/dislike buttons to thumbs up/thumbs down
+ - [ ] Filter data to portrait/painting for sake of facial recognition
 
 ## BACK END
 - [ ] Integrate karma gem:  [https://github.com/bouchard/thumbs_up](https://github.com/bouchard/thumbs_up)
