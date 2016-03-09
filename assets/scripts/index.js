@@ -37,7 +37,7 @@ let setUserVote = function () {
 
   if(!userData || !artData) {
     throw 'user or art not set';
-  };
+  }
 
   let userID = userData.id;
   let votes = artData.votes;
@@ -49,7 +49,7 @@ let setUserVote = function () {
       userVote = votes[i];
     }
   }
-}
+};
 
 let setButtonStates = function() {
 
@@ -148,30 +148,6 @@ as an argument?
 //     console.error(jqxhr)
 //   })
 // };
-
-
-let signUp = function(formData) {
-  $.ajax({
-    type: "POST",
-    url: baseUrl + "/sign-up",
-    contentType: false,
-    processData: false,
-    data: formData,
-  }).done(function(responseData) {
-    console.log(responseData);
-
-    //automatically logs you in...
-    // formData.delete('credentials[password_confirmation]');
-    signIn(formData);
-
-    //hide modal
-    $("#signupModal").modal("hide");
-
-  }).fail(function(jqxhr) {
-    console.error(jqxhr);
-  });
-};
-
 let signIn = function(formData) {
 
   //TODO handle cases where user already signed in
@@ -196,7 +172,7 @@ let signIn = function(formData) {
       setUserVote();
     }
     catch (e) {
-      console.error(e)
+      console.error(e);
     }
 
     setButtonStates();
@@ -211,6 +187,29 @@ let signIn = function(formData) {
 
   }).fail(function(jQXHR) {
     console.log(jQXHR);
+  });
+};
+
+
+let signUp = function(formData) {
+  $.ajax({
+    type: "POST",
+    url: baseUrl + "/sign-up",
+    contentType: false,
+    processData: false,
+    data: formData,
+  }).done(function(responseData) {
+    console.log(responseData);
+
+    //automatically logs you in...
+    // formData.delete('credentials[password_confirmation]');
+    signIn(formData);
+
+    //hide modal
+    $("#signupModal").modal("hide");
+
+  }).fail(function(jqxhr) {
+    console.error(jqxhr);
   });
 };
 
@@ -230,7 +229,7 @@ let signOut = function() {
     //remove user details from nav bar
     $("#leftBar").empty();
     //clear userData
-    userData = undefined
+    userData = undefined;
     userVote = undefined;
     setButtonStates();
 
