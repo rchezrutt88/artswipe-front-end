@@ -20,7 +20,7 @@ let parseImageUrl = function(rawUrl) {
 
 let postImage = function(rawUrl) {
   let imageUrl = parseImageUrl(rawUrl);
-  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='20%' height='20%'>")
+  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='39%' height='100%'>")
 }
 
 let clearImage = function() {
@@ -47,6 +47,7 @@ let getRandomImage = function() {
       postImage(responseData.art.url);
 
       setButtonStates();
+      setHeader();
 
     }).fail(function(jqxhr) {
       console.error(jqxhr);
@@ -60,11 +61,18 @@ let getRandomImage = function() {
       artData = responseData.art
       clearImage()
       postImage(responseData.art.url)
+
+      setHeader();
+
     }).fail(function(jqxhr) {
       console.error(jqxhr)
     });
   }
 
+};
+
+let setHeader = function() {
+$("#title").text(artData.title);
 };
 
 let setButtonStates = function() {

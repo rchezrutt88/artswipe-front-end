@@ -25,7 +25,7 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#signinModal">Login</button>
+          <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#signinModal">Login</button>
           </li>
           <li>
             <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#signupModal">Sign up</button>
@@ -46,86 +46,82 @@
   </nav>
 
 
-  <h1>Example</h1>
+  <h1 id="title"></h1>
 
   <div class="image-container">
 
   </div>
 
-<div class="btn-group" role="group" aria-label="GetImageGetVotes">
-  <button type="button" class="btn btn-primary" id="getImage">Get Image</button>
-  <button type="button" class="btn btn-info" id="votesButton">Get Votes</button>
-</div>
-  <div class="btn-group" role="group" aria-label="like/dislikegroup">
-  <button type="button" class="btn btn-success-outline" id="likeButton">Like</button>
-  <button type="button" class="btn btn-danger-outline" id="dislikeButton">Dislike</button>
-</div
+  <div class="btn-group" role="group" aria-label="button-group" id="button-group">
 
-</body>
+    <button type="button" class="btn btn-success-outline" id="likeButton">Like</button>
+    <button type="button" class="btn btn-primary" id="getImage">Get Image</button>
+    <button type="button" class="btn btn-danger-outline" id="dislikeButton">Dislike</button>
+  </div </body>
 
-<div class="modal fade" id="signinModal">
-  <div class="modal-dialog">
+  <div class="modal fade" id="signinModal">
+    <div class="modal-dialog">
 
-    <form role="form" id="signinForm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h4 class="modal-title">Login</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input class="form-control" id="loginEmail" placeholder="Enter email" type="email" name="credentials[email]">
+      <form role="form" id="signinForm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Login</h4>
           </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input class="form-control" id="loginPassword" placeholder="Password" type="password" name="credentials[password]">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input class="form-control" id="loginEmail" placeholder="Enter email" type="email" name="credentials[email]">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input class="form-control" id="loginPassword" placeholder="Password" type="password" name="credentials[password]">
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <a href="#" data-dismiss="modal" class="btn">Close</a>
-          <button type="submit" class="btn btn-primary">Login</button>
-        </div>
-      </div>
-    </form>
-
-  </div>
-</div>
-
-<!--change password name in form should be of form "passwords[]"  -->
-
-<div class="modal fade" id="signupModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <form role="form" id="signupForm">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h4 class="modal-title">Sign-up</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input class="form-control" id="signupEmail" placeholder="Enter email" type="email" name="credentials[email]">
+          <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn">Close</a>
+            <button type="submit" class="btn btn-primary">Login</button>
           </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input class="form-control" id="signupPassword" placeholder="Password" type="password" name="credentials[password]">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Confirm Password</label>
-            <input class="form-control" id="signupConPassword" placeholder="Password" type="password" name="credentials[password_confirmation]">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a href="#" data-dismiss="modal" class="btn">Close</a>
-          <button type="submit" class="btn btn-primary">Sign-up</button>
         </div>
       </form>
 
     </div>
   </div>
-</div>
+
+  <!--change password name in form should be of form "passwords[]"  -->
+
+  <div class="modal fade" id="signupModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form role="form" id="signupForm">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Sign-up</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input class="form-control" id="signupEmail" placeholder="Enter email" type="email" name="credentials[email]">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input class="form-control" id="signupPassword" placeholder="Password" type="password" name="credentials[password]">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Confirm Password</label>
+              <input class="form-control" id="signupConPassword" placeholder="Password" type="password" name="credentials[password_confirmation]">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn">Close</a>
+            <button type="submit" class="btn btn-primary">Sign-up</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
 
 
 
