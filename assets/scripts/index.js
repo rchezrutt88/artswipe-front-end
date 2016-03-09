@@ -7,24 +7,74 @@
 require('./example');
 
 //TODO remember to change this when deployed...
-let baseUrl = 'http://localhost:3000'
+let baseUrl = 'http://localhost:3000';
 
 let artData;
 let userData;
 let userVote;
 
 let parseImageUrl = function(rawUrl) {
-  let lessRaw = rawUrl.replace('/html/', '/art/').replace('.html', '.jpg')
-  return lessRaw
-}
+  let lessRaw = rawUrl.replace('/html/', '/art/').replace('.html', '.jpg');
+  return lessRaw;
+};
 
 let postImage = function(rawUrl) {
   let imageUrl = parseImageUrl(rawUrl);
-  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='39%' height='100%'>")
-}
+  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='39%' height='100%'>");
+};
 
 let clearImage = function() {
   $(".image-container").empty();
+};
+
+let setHeader = function() {
+$("#title").text(artData.title);
+};
+
+//helper method for updating buttons on sign in...
+//only works if user signed in and art exists
+let setUserVote = function () {
+
+  if(!userData || !artData) {
+    throw 'user or art not set';
+  };
+
+  let userID = userData.id;
+  let votes = artData.votes;
+
+
+  for (let i = 0; i < votes.length; i++) {
+
+    if(userID === votes[i].voter_id) {
+      userVote = votes[i];
+    }
+  }
+}
+
+let setButtonStates = function() {
+
+
+  if (!userVote) {
+    $("#likeButton").removeClass("btn-success").addClass("btn-success-outline");
+    $("#dislikeButton").removeClass("btn-danger").addClass("btn-danger-outline");
+  }
+
+  else {
+
+    switch(userVote.vote) {
+
+      case true:
+        $("#likeButton").removeClass("btn-success-outline").addClass("btn-success");
+        $("#dislikeButton").removeClass("btn-danger").addClass("btn-danger-outline");
+        break;
+
+      case false:
+        $("#likeButton").removeClass("btn-success").addClass("btn-success-outline");
+        $("#dislikeButton").removeClass("btn-danger-outline").addClass("btn-danger");
+        break;
+    }
+  }
+
 };
 
 let getRandomImage = function() {
@@ -43,6 +93,7 @@ let getRandomImage = function() {
       console.log(responseData);
       artData = responseData.art;
       userVote = responseData.art.my_vote;
+
       clearImage();
       postImage(responseData.art.url);
 
@@ -57,49 +108,23 @@ let getRandomImage = function() {
       type: "GET",
       url: baseUrl + "/arts/random"
     }).done(function(responseData) {
-      console.log(responseData)
-      artData = responseData.art
-      clearImage()
-      postImage(responseData.art.url)
+      console.log(responseData);
+
+      artData = responseData.art;
+
+      clearImage();
+      postImage(responseData.art.url);
 
       setHeader();
 
     }).fail(function(jqxhr) {
-      console.error(jqxhr)
+      console.error(jqxhr);
     });
   }
 
 };
 
-let setHeader = function() {
-$("#title").text(artData.title);
-};
 
-let setButtonStates = function() {
-
-
-  if (!userVote) {
-    $("#likeButton").removeClass("btn-success").addClass("btn-success-outline")
-    $("#dislikeButton").removeClass("btn-danger").addClass("btn-danger-outline")
-  }
-
-  else {
-
-    switch(userVote.vote) {
-
-      case true:
-        $("#likeButton").removeClass("btn-success-outline").addClass("btn-success")
-        $("#dislikeButton").removeClass("btn-danger").addClass("btn-danger-outline")
-        break;
-
-      case false:
-        $("#likeButton").removeClass("btn-success").addClass("btn-success-outline")
-        $("#dislikeButton").removeClass("btn-danger-outline").addClass("btn-danger")
-        break;
-    }
-  }
-
-}
 
 
 
@@ -167,11 +192,21 @@ let signIn = function(formData) {
     userData = responseData.user;
     let userEmail = responseData.user.email;
 
+    try{
+      setUserVote();
+    }
+    catch (e) {
+      console.error(e)
+    }
+
+    setButtonStates();
+
     //display user email in navbar
     $("#leftBar").append("<li><p class='navbar-text'>Signed in as " + userEmail + "</p></li>");
 
     //hide modal
     $("#signinModal").modal("hide");
+
 
 
   }).fail(function(jQXHR) {
@@ -195,17 +230,66 @@ let signOut = function() {
     //remove user details from nav bar
     $("#leftBar").empty();
     //clear userData
-    userData = undefined;
+    userData = undefined
+    userVote = undefined;
+    setButtonStates();
 
   }).fail(function(jQXHR) {
     console.log(jQXHR);
-  })
+  });
+};
+
+//TODO throw error for no art
+
+//TODO THIS
+//TODO change to query string instead of data?
+let patchVote = function(bool) {
+  if(!userData) {
+    throw 'no user signed in';
+  }
+  $.ajax({
+    headers: {
+      Authorization: 'Token token=' + userData.token,
+    },
+    type: "PATCH",
+    url: baseUrl + '/arts/' + artData.id + '/toggle-vote',
+    data: {
+      patchVote: bool.toString()
+    }
+  }).done(function(responseData) {
+    console.log(responseData);
+    userVote = responseData.vote;
+    setButtonStates();
+  }).fail(function(jQXHR) {
+    console.error(jQXHR);
+  });
+
+};
+
+let deleteVote = function() {
+  if(!userData) {
+    throw 'no user signed in';
+  }
+
+  $.ajax({
+    headers: {
+      Authorization: 'Token token=' + userData.token,
+    },
+    type: "DELETE",
+    url: baseUrl + '/arts/' + artData.id + '/clear-vote',
+  }).done(function(responseData) {
+    console.log(responseData);
+    userVote = undefined;
+    setButtonStates();
+  }).fail(function(jQXHR) {
+    console.error(jQXHR);
+  });
+
 };
 
 
-
 //TODO Refactor likeArt() and dislikeArt() into one method
-let likeArt = function() {
+let postUpVote = function() {
   if (!userData) {
     throw 'no user signed in';
   }
@@ -221,11 +305,11 @@ let likeArt = function() {
     userVote = responseData.vote;
     setButtonStates();
   }).fail(function(jQXHR) {
-    console.error(jQXHR)
-  })
+    console.error(jQXHR);
+  });
 };
 
-let dislikeArt = function() {
+let postDownVote = function() {
   if (!userData) {
     throw 'no user signed in';
   }
@@ -236,12 +320,56 @@ let dislikeArt = function() {
     type: "POST",
     url: baseUrl + '/arts/' + artData.id + '/down-vote'
   }).done(function(responseData) {
-    userVote = responseData.vote
+    userVote = responseData.vote;
     setButtonStates();
     console.log(responseData);
   }).fail(function(jQXHR) {
-    console.error(jQXHR)
-  })
+    console.error(jQXHR);
+  });
+};
+
+let onLike = function() {
+
+  if(!userData) {
+    throw 'No user signed in';
+  }
+  if(!artData) {
+    throw 'No art displayed';
+  }
+
+  if(!userVote) {
+    postUpVote();
+  }
+
+  else if(userVote.vote) {
+    deleteVote();
+  }
+
+  else if(!userVote.vote) {
+    patchVote(true);
+  }
+};
+
+let onDislike = function() {
+
+  if(!userData) {
+    throw 'No user signed in';
+  }
+  if (!artData) {
+    throw 'No art displayed';
+  }
+
+  if(!userVote) {
+    postDownVote();
+  }
+
+  else if(userVote.vote) {
+    patchVote(false);
+  }
+
+  else if(!userVote.vote) {
+    deleteVote();
+  }
 };
 
 
@@ -281,8 +409,8 @@ $(function() {
   });
 
   //on "like"
-  $("#likeButton").on('click', likeArt);
+  $("#likeButton").on('click', onLike);
   //"on dislike"
-  $("#dislikeButton").on('click', dislikeArt);
+  $("#dislikeButton").on('click', onDislike);
 
 });
