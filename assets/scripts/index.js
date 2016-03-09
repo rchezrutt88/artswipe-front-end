@@ -11,6 +11,7 @@ let baseUrl ='http://localhost:3000'
 
 let artData;
 let userData;
+let userVote;
 
 let parseImageUrl = function (rawUrl) {
   let lessRaw = rawUrl.replace('/html/', '/art/').replace('.html', '.jpg')
@@ -28,17 +29,40 @@ let clearImage = function() {
 
 let getRandomImage = function () {
 
-  $.ajax({
-    type: "GET",
-    url: baseUrl + "/arts/random"
-  }).done(function(responseData) {
-    console.log(responseData)
-    artData = responseData.art
-    clearImage()
-    postImage(responseData.art.url)
-  }).fail(function(jqxhr) {
-    console.error(jqxhr)
-  });
+  //two methods: one for signed in, one for not:
+  //TODO refactor into two functions?
+
+  if(userData) {
+    $.ajax({
+      headers: {
+        Authorization: 'Token token=' + userData.token,
+      },
+      type: "GET",
+      url: baseUrl + "/arts/random"
+    }).done(function(responseData) {
+      console.log(responseData)
+      artData = responseData.art
+      userVote = responseData.my_vote
+      clearImage()
+      postImage(responseData.art.url)
+    }).fail(function(jqxhr) {
+      console.error(jqxhr)
+    });
+  }
+  else {
+    $.ajax({
+      type: "GET",
+      url: baseUrl + "/arts/random"
+    }).done(function(responseData) {
+      console.log(responseData)
+      artData = responseData.art
+      clearImage()
+      postImage(responseData.art.url)
+    }).fail(function(jqxhr) {
+      console.error(jqxhr)
+    });
+  }
+
 };
 
 
@@ -49,20 +73,20 @@ add method for retrieving art by id! Get method! YAY?
 Should this reference the global artData varable or take an art id
 as an argument?
 */
-let getVotesOnArt = function() {
-
-  $.ajax({
-    headers: {
-      Authorization: 'Token token=' + userData.token,
-    },
-    type: "GET",
-    url: baseUrl + '/arts/' + artData.id + '/votes'
-  }).done(function(responseData) {
-    console.log(responseData)
-  }).fail(function(jqxhr) {
-    console.error(jqxhr)
-  })
-};
+// let getVotesOnArt = function() {
+//
+//   $.ajax({
+//     headers: {
+//       Authorization: 'Token token=' + userData.token,
+//     },
+//     type: "GET",
+//     url: baseUrl + '/arts/' + artData.id + '/votes'
+//   }).done(function(responseData) {
+//     console.log(responseData)
+//   }).fail(function(jqxhr) {
+//     console.error(jqxhr)
+//   })
+// };
 
 
 let signUp = function(formData) {
@@ -142,6 +166,8 @@ let signOut = function() {
   })
 };
 
+
+
 //TODO Refactor likeArt() and dislikeArt() into one method
 let likeArt = function() {
   if (!userData) {
@@ -153,8 +179,7 @@ let likeArt = function() {
       Authorization: 'Token token=' + userData.token,
     },
     type: "POST",
-    url: baseUrl + '/arts/' + artData.id + '/votes',
-    data: {vote:{liked: true}}
+    url: baseUrl + '/arts/' + artData.id + '/up-vote',
   }).done(function(responseData) {
     console.log(responseData);
   }).fail(function(jQXHR) {
@@ -171,8 +196,7 @@ let dislikeArt = function() {
       Authorization: 'Token token=' + userData.token,
     },
     type: "POST",
-    url: baseUrl + '/arts/' + artData.id + '/votes',
-    data: {vote:{liked: false}}
+    url: baseUrl + '/arts/' + artData.id + '/down-vote'
   }).done(function(responseData) {
     console.log(responseData);
   }).fail(function(jQXHR) {
