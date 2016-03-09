@@ -7,18 +7,18 @@
 require('./example');
 
 //TODO remember to change this when deployed...
-let baseUrl ='http://localhost:3000'
+let baseUrl = 'http://localhost:3000'
 
 let artData;
 let userData;
 let userVote;
 
-let parseImageUrl = function (rawUrl) {
+let parseImageUrl = function(rawUrl) {
   let lessRaw = rawUrl.replace('/html/', '/art/').replace('.html', '.jpg')
   return lessRaw
 }
 
-let postImage = function (rawUrl) {
+let postImage = function(rawUrl) {
   let imageUrl = parseImageUrl(rawUrl);
   $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='20%' height='20%'>")
 }
@@ -27,12 +27,12 @@ let clearImage = function() {
   $(".image-container").empty();
 };
 
-let getRandomImage = function () {
+let getRandomImage = function() {
 
   //two methods: one for signed in, one for not:
   //TODO refactor into two functions?
 
-  if(userData) {
+  if (userData) {
     $.ajax({
       headers: {
         Authorization: 'Token token=' + userData.token,
@@ -40,16 +40,18 @@ let getRandomImage = function () {
       type: "GET",
       url: baseUrl + "/arts/random"
     }).done(function(responseData) {
-      console.log(responseData)
-      artData = responseData.art
-      userVote = responseData.my_vote
-      clearImage()
-      postImage(responseData.art.url)
+      console.log(responseData);
+      artData = responseData.art;
+      userVote = responseData.art.my_vote;
+      clearImage();
+      postImage(responseData.art.url);
+
+      setButtonStates();
+
     }).fail(function(jqxhr) {
-      console.error(jqxhr)
+      console.error(jqxhr);
     });
-  }
-  else {
+  } else {
     $.ajax({
       type: "GET",
       url: baseUrl + "/arts/random"
@@ -64,6 +66,32 @@ let getRandomImage = function () {
   }
 
 };
+
+let setButtonStates = function() {
+
+
+  if (!userVote) {
+    $("#likeButton").removeClass("btn-success").addClass("btn-success-outline")
+    $("#dislikeButton").removeClass("btn-danger").addClass("btn-danger-outline")
+  }
+
+  else {
+
+    switch(userVote.vote) {
+
+      case true:
+        $("#likeButton").removeClass("btn-success-outline").addClass("btn-success")
+        $("#dislikeButton").removeClass("btn-danger").addClass("btn-danger-outline")
+        break;
+
+      case false:
+        $("#likeButton").removeClass("btn-success").addClass("btn-success-outline")
+        $("#dislikeButton").removeClass("btn-danger-outline").addClass("btn-danger")
+        break;
+    }
+  }
+
+}
 
 
 
@@ -182,6 +210,8 @@ let likeArt = function() {
     url: baseUrl + '/arts/' + artData.id + '/up-vote',
   }).done(function(responseData) {
     console.log(responseData);
+    userVote = responseData.vote;
+    setButtonStates();
   }).fail(function(jQXHR) {
     console.error(jQXHR)
   })
@@ -198,6 +228,8 @@ let dislikeArt = function() {
     type: "POST",
     url: baseUrl + '/arts/' + artData.id + '/down-vote'
   }).done(function(responseData) {
+    userVote = responseData.vote
+    setButtonStates();
     console.log(responseData);
   }).fail(function(jQXHR) {
     console.error(jQXHR)
@@ -209,40 +241,40 @@ let dislikeArt = function() {
 
 $(function() {
 
-$("#getImage").on('click', function() {
-  getRandomImage();
-});
+  $("#getImage").on('click', function() {
+    getRandomImage();
+  });
 
-//to retrieve votes on imageUrl
-$("#votesButton").on('click', getVotesOnArt);
+  // //to retrieve votes on imageUrl
+  // $("#votesButton").on('click', getVotesOnArt);
 
-//for sign-up
-$("#signupForm").on('submit', function(event) {
-  event.preventDefault();
-  let formData = new FormData(event.target);
-  signUp(formData);
-  //let formData = new FormData(event.)
-});
+  //for sign-up
+  $("#signupForm").on('submit', function(event) {
+    event.preventDefault();
+    let formData = new FormData(event.target);
+    signUp(formData);
+    //let formData = new FormData(event.)
+  });
 
-//For sign-in
-$("#signinForm").on('submit', function(event) {
-  event.preventDefault();
-  let formData = new FormData(event.target);
-  signIn(formData);
+  //For sign-in
+  $("#signinForm").on('submit', function(event) {
+    event.preventDefault();
+    let formData = new FormData(event.target);
+    signIn(formData);
 
-});
+  });
 
-//for sign-out
-$("#signoutbtn").on('click', function() {
-  if (!userData) {
-    throw "no user signed in";
-  }
-  signOut();
-});
+  //for sign-out
+  $("#signoutbtn").on('click', function() {
+    if (!userData) {
+      throw "no user signed in";
+    }
+    signOut();
+  });
 
-//on "like"
-$("#likeButton").on('click', likeArt);
-//"on dislike"
-$("#dislikeButton").on('click', dislikeArt);
+  //on "like"
+  $("#likeButton").on('click', likeArt);
+  //"on dislike"
+  $("#dislikeButton").on('click', dislikeArt);
 
 });
