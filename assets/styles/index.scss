@@ -26,7 +26,18 @@ body {
   background-color: #d9534f;
   border-color: #d9534f;
 }
-#button-group {
+.wrapper {
+  text-align: center;
+}
+.main-btn-bar {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+#art {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+#title {
+  text-align: center;
 }

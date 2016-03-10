@@ -20,7 +20,7 @@ let parseImageUrl = function(rawUrl) {
 
 let postImage = function(rawUrl) {
   let imageUrl = parseImageUrl(rawUrl);
-  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' alt='http://www.wga.hu/' width='39%' height='100%'>");
+  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' id='art' alt='http://www.wga.hu/' width='30%' height='100%'>");
 };
 
 let clearImage = function() {
