@@ -33,7 +33,7 @@ webpackJsonp([0],[
 	__webpack_require__(3);
 
 	//TODO remember to change this when deployed...
-	var baseUrl = 'http://localhost:3000';
+	var baseUrl = 'https://artswipe.herokuapp.com';
 
 	var artData = undefined;
 	var userData = undefined;
