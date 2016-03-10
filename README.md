@@ -28,3 +28,7 @@ When a user clicks the "like" or "dislike" button, the app determines whether to
  - [ ] Revamp navbar: `LOGO - - - - - - - - "email" login logout`.
  - [ ] Change like/dislike buttons to thumbs up/thumbs down.
  - [ ] Implement change password...
+
+## An Extremely Detailed and Professional Wireframe of my Front-End
+
+![A Professional Wireframe](https://github.com/rchezrutt88/artswipe-front-end/raw/master/FineArtTinder.png)
