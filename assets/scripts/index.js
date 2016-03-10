@@ -7,7 +7,7 @@
 require('./example');
 
 //TODO remember to change this when deployed...
-let baseUrl = 'http://localhost:3000';
+let baseUrl = 'https://artswipe.herokuapp.com';
 
 let artData;
 let userData;
