@@ -8,7 +8,7 @@ ArtSwipe is a web app that, in a playful twist on dating apps like Tinder, allow
 
 ArtSwipe is a simple app.
 
-ArtSwipe represents users, art, and votes as ActiveRecord models in rails.
+ArtSwipe's [back-end](https://github.com/rchezrutt88/artswipe-back-end) is hosted on heroku.
 
 When the user clicks "Get Image", the server selects a random art entry from the database. The entry is returned to the front-end, which posts the image by the associated url pointing to the image on [Web Gallery of Art](http://www.wga.hu/).
 
@@ -18,7 +18,7 @@ When a user clicks the "like" or "dislike" button, the app determines whether to
 
  I first created a front-end that was capable of parsing urls from the Web Gallery of Art dataset and displaying the image associated with an art entry. I next wrote a back-end consisting of users, art, and votes. To associate these models, I used the [ThumbsUp](https://github.com/bouchard/thumbs_up) gem, which permitted me to declare that art model "acts_as_voteable" and user model "acts_as_voter".
 
- ## Unsolved Problems
+## Unsolved Problems
 
  - [ ] Include simple bootstrap status bar to display likes/dislike ratio of portraits. (Very achievable!)
  - [ ] Integrating the [FACE++ facial recognition API](http://www.faceplusplus.com/), allowing users to filter portraits by gender and permiting the cropping of images to just the face.
@@ -27,3 +27,4 @@ When a user clicks the "like" or "dislike" button, the app determines whether to
  - [ ] Make more mobile friendly, including true swiping functionality on touch screens.
  - [ ] Revamp navbar: `LOGO - - - - - - - - "email" login logout`.
  - [ ] Change like/dislike buttons to thumbs up/thumbs down.
+ - [ ] Implement change password...
