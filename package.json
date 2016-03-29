@@ -4,6 +4,8 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
+    "google-maps": "^3.2.1",
+    "handlebars": "^4.0.5",
     "jquery": "^2.1.4"
   },
   "devDependencies": {

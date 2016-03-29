@@ -5,6 +5,7 @@
 
 // use require without a reference to ensure a file is bundled
 require('./example');
+require('./map.js');
 
 //TODO remember to change this when deployed...
 let baseUrl = 'http://localhost:3000';
