@@ -4,8 +4,7 @@
 // var example = require('./example');
 
 // use require without a reference to ensure a file is bundled
-require('./example');
-require('./map.js');
+let map = require('./map.js');
 
 //TODO remember to change this when deployed...
 let baseUrl = 'http://localhost:3000';
@@ -84,7 +83,7 @@ let getRandomImage = function() {
   //TODO refactor into two functions?
 
   if (userData) {
-    $.ajax({
+    return $.ajax({
       headers: {
         Authorization: 'Token token=' + userData.token,
       },
@@ -105,7 +104,7 @@ let getRandomImage = function() {
       console.error(jqxhr);
     });
   } else {
-    $.ajax({
+    return $.ajax({
       type: "GET",
       url: baseUrl + "/arts/random"
     }).done(function(responseData) {
@@ -377,8 +376,11 @@ let onDislike = function() {
 
 $(function() {
 
+  map.initializeMap();
+
+
   $("#getImage").on('click', function() {
-    getRandomImage();
+    getRandomImage().then(responseData => map.codeAddress(responseData.art.location));
   });
 
   // //to retrieve votes on imageUrl
