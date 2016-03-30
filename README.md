@@ -28,6 +28,7 @@ When a user clicks the "like" or "dislike" button, the app determines whether to
  - [ ] Revamp navbar: `LOGO - - - - - - - - "email" login logout`.
  - [ ] Change like/dislike buttons to thumbs up/thumbs down.
  - [ ] Implement change password...
+ - [ ] calls to google geocoder and face++ on backend
 
 ## An Extremely Detailed and Professional Wireframe of my Front-End
 
