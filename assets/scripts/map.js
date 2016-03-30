@@ -21,35 +21,47 @@ let initializeMap = function() {
       },
       zoom: 15,
     });
-		geocoder = new google.maps.Geocoder();
+    geocoder = new google.maps.Geocoder();
   });
 };
 
 GoogleMapsLoader.onLoad(function(google) {
   console.log('I just loaded google maps api');
-  BOSTON = new google.maps.LatLng({lat: 42.2129, lng: -71.0349});
+  BOSTON = new google.maps.LatLng({
+    lat: 42.2129,
+    lng: -71.0349
+  });
 });
 
 let codeAddress = function(address) {
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        console.log(getMiles(google.maps.geometry.spherical.computeDistanceBetween(BOSTON, results[0].geometry.location)));
-        map.setCenter(results[0].geometry.location);
-        let marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
-        });
-      } else {
-        console.log("Geocode was not successful for the following reason: " + status);
-      }
-    });
-  };
+  geocoder.geocode({
+    'address': address
+  }, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      setDistance(Math.round((getMiles(google.maps.geometry.spherical.computeDistanceBetween(BOSTON, results[0].geometry.location)))));
+      map.setCenter(results[0].geometry.location);
+      let marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location
+      });
+    } else {
+      console.log("Geocode was not successful for the following reason: " + status);
+    }
+  });
+};
 
-  function getMiles(i) {
-       return i*0.000621371192;
-  }
+let getMiles = function(i) {
+  return i * 0.000621371192;
+};
+
+let setDistance = function(distance) {
+  $("#distance").text(distance + " miles away");
+}
+
+
+
 
 module.exports = {
   initializeMap,
-	codeAddress,
+  codeAddress,
 }
