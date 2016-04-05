@@ -9,6 +9,9 @@ _SpecRunner.html
 *.ttf
 *.eot
 
+
+tmp
+
 # Created by https://www.gitignore.io
 
 ### Node ###
