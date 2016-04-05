@@ -50,20 +50,34 @@
   <h3 id="distance"></h2>
 
   <div class="image-container"></div>
-<div class="wrapper">
-  <div class="btn-group main-btn-bar" role="group" aria-label="button-group">
+  <div class="wrapper">
+    <div class="btn-group main-btn-bar" role="group" aria-label="button-group">
 
-    <button type="button" class="btn btn-success-outline" id="likeButton">Like</button>
-    <button type="button" class="btn btn-primary" id="getImage">Get Image</button>
-    <button type="button" class="btn btn-danger-outline" id="dislikeButton">Dislike</button>
+      <button type="button" class="btn btn-success-outline" id="likeButton">Like</button>
+      <button type="button" class="btn btn-primary" id="getImage">Get Image</button>
+      <button type="button" class="btn btn-danger-outline" id="dislikeButton">Dislike</button>
+
+    </div>
+
+    <form role="form" class="form-inline" id="gender-form">
+      <div class="form-group">
+        <label class="sr-only" for="sel1">Gender:</label>
+        <select class="form-control" name="gender" id="sel1">
+          <option value="none">No Gender Preference</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+    </form>
+
 
   </div>
-</div>
+  <div id='map'></div>
 
-<div id='map'>
-</div>
 
 </body>
+
 
 <div class="modal fade" id="signinModal">
   <div class="modal-dialog">
