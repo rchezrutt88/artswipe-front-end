@@ -31,6 +31,10 @@ let setHeader = function() {
 $("#title").text(artData.title);
 };
 
+let getGender = function() {
+  return $("#gender-form").serialize();
+}
+
 //helper method for updating buttons on sign in...
 //only works if user signed in and art exists
 let setUserVote = function () {
@@ -79,6 +83,7 @@ let setButtonStates = function() {
 
 let getRandomImage = function() {
 
+
   //two methods: one for signed in, one for not:
   //TODO refactor into two functions?
 
@@ -106,7 +111,8 @@ let getRandomImage = function() {
   } else {
     return $.ajax({
       type: "GET",
-      url: baseUrl + "/arts/random"
+      url: baseUrl + "/arts/random",
+      data: getGender(),
     }).done(function(responseData) {
       console.log(responseData);
 
@@ -414,5 +420,7 @@ $(function() {
   $("#likeButton").on('click', onLike);
   //"on dislike"
   $("#dislikeButton").on('click', onDislike);
+
+
 
 });
