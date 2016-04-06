@@ -81,7 +81,6 @@ let setButtonStates = function() {
 
 let getRandomImage = function() {
 
-
   //two methods: one for signed in, one for not:
   //TODO refactor into two functions?
 
@@ -91,19 +90,9 @@ let getRandomImage = function() {
         Authorization: 'Token token=' + userData.token,
       },
       type: "GET",
-      url: baseUrl + "/arts/random"
-    }).done(function(responseData) {
-      console.log(responseData);
-      artData = responseData.art;
-      userVote = responseData.art.my_vote;
-
-      clearImage();
-      postImage(responseData.art.url);
-
-      setButtonStates();
-      setHeader();
-
-    }).fail(function(jqxhr) {
+      url: baseUrl + "/arts/random",
+      data: getGender(),
+    }).done(afterRandomImageDo).fail(function(jqxhr) {
       console.error(jqxhr);
     });
   } else {
@@ -111,22 +100,31 @@ let getRandomImage = function() {
       type: "GET",
       url: baseUrl + "/arts/random",
       data: getGender(),
-    }).done(function(responseData) {
-      console.log(responseData);
-
-      artData = responseData.art;
-
-      clearImage();
-      postImage(responseData.art.url);
-
-      setHeader();
-
-    }).fail(function(jqxhr) {
+    }).done(afterRandomImageDo).fail(function(jqxhr) {
       console.error(jqxhr);
     });
   }
 
 };
+
+let afterRandomImageDo = function(responseData) {
+
+  if(responseData.art.my_vote) {
+    userVote = responseData.art.my_vote;
+  } else {
+    userVote = undefined;
+  };
+
+  artData = responseData.art;
+
+  console.log(artData);
+
+  clearImage();
+  postImage(responseData.art.url);
+
+  setButtonStates();
+  setHeader();
+}
 
 
 
@@ -415,14 +413,18 @@ $(function() {
   $(this).keydown(function(e) {
 
     switch (e.keyCode) {
+
+      //on left arrow
       case 37:
         onDislike();
         break;
 
+      //on right arrow
       case 39:
         onLike();
         break;
 
+      //on spacebar
       case 32:
         e.preventDefault();
         getRandomImage().then(responseData => map.codeAddress(responseData.art.location));;
@@ -430,5 +432,12 @@ $(function() {
 
     }
   });
+
+  //swipe listener
+$("div.image-container").on("swipeleft", onDislike);
+
+$("div.image-container").on("swiperight", onLike);
+
+
 
 });
