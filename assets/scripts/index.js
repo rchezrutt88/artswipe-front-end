@@ -28,7 +28,7 @@ let clearImage = function() {
 };
 
 let setHeader = function() {
-$("#title").text(artData.title);
+  $("#title").text(artData.title);
 };
 
 let getGender = function() {
@@ -37,9 +37,9 @@ let getGender = function() {
 
 //helper method for updating buttons on sign in...
 //only works if user signed in and art exists
-let setUserVote = function () {
+let setUserVote = function() {
 
-  if(!userData || !artData) {
+  if (!userData || !artData) {
     throw 'user or art not set';
   }
 
@@ -49,7 +49,7 @@ let setUserVote = function () {
 
   for (let i = 0; i < votes.length; i++) {
 
-    if(userID === votes[i].voter_id) {
+    if (userID === votes[i].voter_id) {
       userVote = votes[i];
     }
   }
@@ -61,11 +61,9 @@ let setButtonStates = function() {
   if (!userVote) {
     $("#likeButton").removeClass("btn-success").addClass("btn-success-outline");
     $("#dislikeButton").removeClass("btn-danger").addClass("btn-danger-outline");
-  }
+  } else {
 
-  else {
-
-    switch(userVote.vote) {
+    switch (userVote.vote) {
 
       case true:
         $("#likeButton").removeClass("btn-success-outline").addClass("btn-success");
@@ -174,10 +172,9 @@ let signIn = function(formData) {
     userData = responseData.user;
     let userEmail = responseData.user.email;
 
-    try{
+    try {
       setUserVote();
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
 
@@ -249,7 +246,7 @@ let signOut = function() {
 //TODO THIS
 //TODO change to query string instead of data?
 let patchVote = function(bool) {
-  if(!userData) {
+  if (!userData) {
     throw 'no user signed in';
   }
   $.ajax({
@@ -272,7 +269,7 @@ let patchVote = function(bool) {
 };
 
 let deleteVote = function() {
-  if(!userData) {
+  if (!userData) {
     throw 'no user signed in';
   }
 
@@ -335,44 +332,36 @@ let postDownVote = function() {
 
 let onLike = function() {
 
-  if(!userData) {
-    throw 'No user signed in';
-  }
-  if(!artData) {
-    throw 'No art displayed';
-  }
-
-  if(!userVote) {
-    postUpVote();
-  }
-
-  else if(userVote.vote) {
-    deleteVote();
-  }
-
-  else if(!userVote.vote) {
-    patchVote(true);
-  }
-};
-
-let onDislike = function() {
-
-  if(!userData) {
+  if (!userData) {
     throw 'No user signed in';
   }
   if (!artData) {
     throw 'No art displayed';
   }
 
-  if(!userVote) {
+  if (!userVote) {
+    postUpVote();
+  } else if (userVote.vote) {
+    deleteVote();
+  } else if (!userVote.vote) {
+    patchVote(true);
+  }
+};
+
+let onDislike = function() {
+
+  if (!userData) {
+    throw 'No user signed in';
+  }
+  if (!artData) {
+    throw 'No art displayed';
+  }
+
+  if (!userVote) {
     postDownVote();
-  }
-
-  else if(userVote.vote) {
+  } else if (userVote.vote) {
     patchVote(false);
-  }
-
-  else if(!userVote.vote) {
+  } else if (!userVote.vote) {
     deleteVote();
   }
 };
@@ -422,5 +411,24 @@ $(function() {
   $("#dislikeButton").on('click', onDislike);
 
 
+  //listens for keys
+  $(this).keydown(function(e) {
+
+    switch (e.keyCode) {
+      case 37:
+        onDislike();
+        break;
+
+      case 39:
+        onLike();
+        break;
+
+      case 32:
+        e.preventDefault();
+        getRandomImage().then(responseData => map.codeAddress(responseData.art.location));;
+        break;
+
+    }
+  });
 
 });
