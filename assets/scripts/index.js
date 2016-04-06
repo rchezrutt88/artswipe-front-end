@@ -4,7 +4,7 @@
 // var example = require('./example');
 
 // use require without a reference to ensure a file is bundled
-require('./example');
+let map = require('./map.js');
 
 //TODO remember to change this when deployed...
 let baseUrl = 'http://localhost:3000';
@@ -30,6 +30,10 @@ let clearImage = function() {
 let setHeader = function() {
 $("#title").text(artData.title);
 };
+
+let getGender = function() {
+  return $("#gender-form").serialize();
+}
 
 //helper method for updating buttons on sign in...
 //only works if user signed in and art exists
@@ -79,11 +83,12 @@ let setButtonStates = function() {
 
 let getRandomImage = function() {
 
+
   //two methods: one for signed in, one for not:
   //TODO refactor into two functions?
 
   if (userData) {
-    $.ajax({
+    return $.ajax({
       headers: {
         Authorization: 'Token token=' + userData.token,
       },
@@ -104,9 +109,10 @@ let getRandomImage = function() {
       console.error(jqxhr);
     });
   } else {
-    $.ajax({
+    return $.ajax({
       type: "GET",
-      url: baseUrl + "/arts/random"
+      url: baseUrl + "/arts/random",
+      data: getGender(),
     }).done(function(responseData) {
       console.log(responseData);
 
@@ -376,8 +382,11 @@ let onDislike = function() {
 
 $(function() {
 
+  map.initializeMap();
+
+
   $("#getImage").on('click', function() {
-    getRandomImage();
+    getRandomImage().then(responseData => map.codeAddress(responseData.art.location));
   });
 
   // //to retrieve votes on imageUrl
@@ -411,5 +420,7 @@ $(function() {
   $("#likeButton").on('click', onLike);
   //"on dislike"
   $("#dislikeButton").on('click', onDislike);
+
+
 
 });

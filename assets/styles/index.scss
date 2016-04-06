@@ -1,8 +1,10 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
-body {
+
+html, body {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #373a3c;
+  height: 100%;
 }
 .btn-success-outline {
   color: #5cb85c;
@@ -28,6 +30,9 @@ body {
 }
 .wrapper {
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
 }
 .main-btn-bar {
   margin-top: 10px;
@@ -41,3 +46,15 @@ body {
 #title {
   text-align: center;
 }
+
+#distance {
+  text-align: center;
+}
+#map {
+  height: 30%;
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+ }
