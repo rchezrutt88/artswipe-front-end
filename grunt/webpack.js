@@ -8,7 +8,7 @@ module.exports = {
     entry: {
       bundle: './index.js',
       specs: './spec/_all.js',
-      vendor: ['jquery', 'bootstrap-sass'],
+      vendor: ['jquery', 'jquery-mobile', 'bootstrap-sass'],
     },
 
     output: {
@@ -27,6 +27,7 @@ module.exports = {
 
     module: {
       loaders: [
+
         {
           test: /\.js$/,
           exclude: /(node_modules|bower_components)/,
@@ -34,6 +35,10 @@ module.exports = {
           query: {
             presets: ['es2015']
           }
+        },
+        {
+          test: /\.js$/,
+          loader: 'imports?jQuery=jquery,$=jquery,this=>window',
         },
         {
           test: /\.css/,
@@ -62,6 +67,12 @@ module.exports = {
           loader: 'handlebars-loader!html'
         }
       ]
+    },
+
+    resolve: {
+      alias: {
+        'jquery-mobile': path.resolve(__dirname, "../node_modules") + '/jquery-mobile/dist/jquery.mobile.js'
+      }
     },
 
     stats: {

@@ -5,6 +5,8 @@
 
 // use require without a reference to ensure a file is bundled
 let map = require('./map.js');
+let $ = require('jquery');
+require('jquery-mobile');
 
 //TODO remember to change this when deployed...
 let baseUrl = 'http://localhost:3000';
