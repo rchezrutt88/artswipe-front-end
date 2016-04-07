@@ -5,9 +5,10 @@
 
 // use require without a reference to ensure a file is bundled
 let map = require('./map.js');
+let Hammer = require('hammerjs');
+let BASE_URL = require('./myApp.js').BASE_URL
 
 //TODO remember to change this when deployed...
-let baseUrl = 'http://localhost:3000';
 
 let artData;
 let userData;
@@ -20,11 +21,11 @@ let parseImageUrl = function(rawUrl) {
 
 let postImage = function(rawUrl) {
   let imageUrl = parseImageUrl(rawUrl);
-  $(".image-container").append("<img src=" + imageUrl + " class='img-rounded' id='art' alt='http://www.wga.hu/' width='30%' height='100%'>");
+  $("#art").attr("src", imageUrl);
 };
 
 let clearImage = function() {
-  $(".image-container").empty();
+  $("#art").attr("src", "");
 };
 
 let setHeader = function() {
@@ -90,7 +91,7 @@ let getRandomImage = function() {
         Authorization: 'Token token=' + userData.token,
       },
       type: "GET",
-      url: baseUrl + "/arts/random",
+      url: BASE_URL + "/arts/random",
       data: getGender(),
     }).done(afterRandomImageDo).fail(function(jqxhr) {
       console.error(jqxhr);
@@ -98,7 +99,7 @@ let getRandomImage = function() {
   } else {
     return $.ajax({
       type: "GET",
-      url: baseUrl + "/arts/random",
+      url: BASE_URL + "/arts/random",
       data: getGender(),
     }).done(afterRandomImageDo).fail(function(jqxhr) {
       console.error(jqxhr);
@@ -109,7 +110,7 @@ let getRandomImage = function() {
 
 let afterRandomImageDo = function(responseData) {
 
-  if(responseData.art.my_vote) {
+  if (responseData.art.my_vote) {
     userVote = responseData.art.my_vote;
   } else {
     userVote = undefined;
@@ -143,7 +144,7 @@ as an argument?
 //       Authorization: 'Token token=' + userData.token,
 //     },
 //     type: "GET",
-//     url: baseUrl + '/arts/' + artData.id + '/votes'
+//     url: BASE_URL + '/arts/' + artData.id + '/votes'
 //   }).done(function(responseData) {
 //     console.log(responseData)
 //   }).fail(function(jqxhr) {
@@ -160,7 +161,7 @@ let signIn = function(formData) {
 
   $.ajax({
     type: "POST",
-    url: baseUrl + '/sign-in',
+    url: BASE_URL + '/sign-in',
     contentType: false,
     processData: false,
     data: formData,
@@ -195,7 +196,7 @@ let signIn = function(formData) {
 let signUp = function(formData) {
   $.ajax({
     type: "POST",
-    url: baseUrl + "/sign-up",
+    url: BASE_URL + "/sign-up",
     contentType: false,
     processData: false,
     data: formData,
@@ -223,7 +224,7 @@ let signOut = function() {
       Authorization: 'Token token=' + userData.token,
     },
     type: "DELETE",
-    url: baseUrl + "/sign-out/" + userData.id,
+    url: BASE_URL + "/sign-out/" + userData.id,
 
   }).done(function(responseData) {
     console.log(responseData);
@@ -252,7 +253,7 @@ let patchVote = function(bool) {
       Authorization: 'Token token=' + userData.token,
     },
     type: "PATCH",
-    url: baseUrl + '/arts/' + artData.id + '/toggle-vote',
+    url: BASE_URL + '/arts/' + artData.id + '/toggle-vote',
     data: {
       patchVote: bool.toString()
     }
@@ -276,7 +277,7 @@ let deleteVote = function() {
       Authorization: 'Token token=' + userData.token,
     },
     type: "DELETE",
-    url: baseUrl + '/arts/' + artData.id + '/clear-vote',
+    url: BASE_URL + '/arts/' + artData.id + '/clear-vote',
   }).done(function(responseData) {
     console.log(responseData);
     userVote = undefined;
@@ -299,7 +300,7 @@ let postUpVote = function() {
       Authorization: 'Token token=' + userData.token,
     },
     type: "POST",
-    url: baseUrl + '/arts/' + artData.id + '/up-vote',
+    url: BASE_URL + '/arts/' + artData.id + '/up-vote',
   }).done(function(responseData) {
     console.log(responseData);
     userVote = responseData.vote;
@@ -318,7 +319,7 @@ let postDownVote = function() {
       Authorization: 'Token token=' + userData.token,
     },
     type: "POST",
-    url: baseUrl + '/arts/' + artData.id + '/down-vote'
+    url: BASE_URL + '/arts/' + artData.id + '/down-vote'
   }).done(function(responseData) {
     userVote = responseData.vote;
     setButtonStates();
@@ -371,7 +372,6 @@ $(function() {
 
   map.initializeMap();
 
-
   $("#getImage").on('click', function() {
     getRandomImage().then(responseData => map.codeAddress(responseData.art.location));
   });
@@ -419,12 +419,12 @@ $(function() {
         onDislike();
         break;
 
-      //on right arrow
+        //on right arrow
       case 39:
         onLike();
         break;
 
-      //on spacebar
+        //on spacebar
       case 32:
         e.preventDefault();
         getRandomImage().then(responseData => map.codeAddress(responseData.art.location));;
@@ -434,9 +434,14 @@ $(function() {
   });
 
   //swipe listener
-$("div.image-container").on("swipeleft", onDislike);
-
-$("div.image-container").on("swiperight", onLike);
+  let swipeBinder = new Hammer($("#art")[0]);
+  $('#art').on('dragstart', function(event) { event.preventDefault(); });
+  swipeBinder.on('swipeleft', function(e) {
+    onDislike();
+  });
+  swipeBinder.on('swiperight', function(e) {
+    onLike();
+  });
 
 
 
