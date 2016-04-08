@@ -122,7 +122,6 @@ let afterRandomImageDo = function(responseData) {
 
   clearImage();
   postImage(responseData.art.url);
-
   setButtonStates();
   setHeader();
 }
@@ -340,13 +339,13 @@ let onLike = function() {
 
   if (!userVote) {
     postUpVote();
+    getRandomImage();
   } else if (userVote.vote) {
     deleteVote();
   } else if (!userVote.vote) {
     patchVote(true);
+    getRandomImage();
   }
-
-  getRandomImage();
 };
 
 let onDislike = function() {
@@ -360,13 +359,14 @@ let onDislike = function() {
 
   if (!userVote) {
     postDownVote();
+    getRandomImage();
   } else if (userVote.vote) {
     patchVote(false);
+    getRandomImage();
   } else if (!userVote.vote) {
     deleteVote();
   }
 
-  getRandomImage();
 };
 
 
