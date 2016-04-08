@@ -25,7 +25,10 @@ let draw = function(sx, sy, sWidth, sHeight) {
 
   // Draw slice
   console.log(arguments)
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(document.getElementById('source'), sx, sy, sWidth, sHeight, 0, 0, sWidth, sHeight);
+
+
 
   // // Draw frame
   // ctx.drawImage(document.getElementById('frame'), 0, 0);
