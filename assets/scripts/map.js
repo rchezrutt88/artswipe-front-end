@@ -6,6 +6,7 @@ let myApp = require('./myApp')
 let map;
 let geocoder;
 let BOSTON;
+let currentLocation;
 
 
 GoogleMapsLoader.KEY = myApp.GM_API_KEY;
@@ -31,6 +32,15 @@ GoogleMapsLoader.onLoad(function(google) {
     lat: 42.2129,
     lng: -71.0349
   });
+
+});
+
+navigator.geolocation.getCurrentPosition(function(position) {
+  map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
+  currentLocation = new google.maps.LatLng({
+    lat: position.coords.latitude,
+    lng: position.coords.longitude
+  });
 });
 
 let codeAddress = function(address) {
@@ -38,7 +48,7 @@ let codeAddress = function(address) {
     'address': address
   }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-      setDistance(Math.round((getMiles(google.maps.geometry.spherical.computeDistanceBetween(BOSTON, results[0].geometry.location)))));
+      setDistance(Math.round((getMiles(google.maps.geometry.spherical.computeDistanceBetween(currentLocation || BOSTON, results[0].geometry.location)))));
       map.setCenter(results[0].geometry.location);
       let marker = new google.maps.Marker({
         map: map,
