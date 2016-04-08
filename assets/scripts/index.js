@@ -19,9 +19,23 @@ let parseImageUrl = function(rawUrl) {
   return lessRaw;
 };
 
-let postImage = function(rawUrl) {
+let draw = function(sx, sy, sWidth, sHeight) {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+
+  // Draw slice
+  console.log(arguments)
+  ctx.drawImage(document.getElementById('source'), sx, sy, sWidth, sHeight, 0, 0, sWidth, sHeight);
+
+  // // Draw frame
+  // ctx.drawImage(document.getElementById('frame'), 0, 0);
+};
+
+let postImage = function(rawUrl, face) {
   let imageUrl = parseImageUrl(rawUrl);
   $("#art").attr("src", imageUrl);
+  $("#source").attr("src", imageUrl);
+  draw(face.positionX, face.positionY, face.width, face.height);
 };
 
 let clearImage = function() {
@@ -121,7 +135,7 @@ let afterRandomImageDo = function(responseData) {
   console.log(artData);
 
   clearImage();
-  postImage(responseData.art.url);
+  postImage(responseData.art.url, responseData.art.face);
 
   setButtonStates();
   setHeader();
@@ -366,11 +380,13 @@ let onDislike = function() {
 };
 
 
+
 /*######################### EXECUTING CODE ###################################*/
 
 $(function() {
 
   map.initializeMap();
+
 
   $("#getImage").on('click', function() {
     getRandomImage().then(responseData => map.codeAddress(responseData.art.location));
@@ -435,7 +451,9 @@ $(function() {
 
   //swipe listener
   let swipeBinder = new Hammer($("#art")[0]);
-  $('#art').on('dragstart', function(event) { event.preventDefault(); });
+  $('#art').on('dragstart', function(event) {
+    event.preventDefault();
+  });
   swipeBinder.on('swipeleft', function(e) {
     onDislike();
   });
