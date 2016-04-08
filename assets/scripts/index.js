@@ -345,6 +345,8 @@ let onLike = function() {
   } else if (!userVote.vote) {
     patchVote(true);
   }
+
+  getRandomImage();
 };
 
 let onDislike = function() {
@@ -363,6 +365,8 @@ let onDislike = function() {
   } else if (!userVote.vote) {
     deleteVote();
   }
+
+  getRandomImage();
 };
 
 
