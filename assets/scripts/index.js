@@ -179,7 +179,9 @@ let signIn = function(formData) {
     setButtonStates();
 
     //display user email in navbar
-    $("#leftBar").append("<li><p class='navbar-text'>Signed in as " + userEmail + "</p></li>");
+    // $("#leftBar").append("<li><p class='navbar-text'>Signed in as " + userEmail + "</p></li>");
+    $("#signed-in-user").text("Signed in as " + userEmail);
+    $(".navbar-right a").toggle();
 
     //hide modal
     $("#signinModal").modal("hide");
@@ -228,7 +230,8 @@ let signOut = function() {
   }).done(function(responseData) {
     console.log(responseData);
     //remove user details from nav bar
-    $("#leftBar").empty();
+    $(".navbar-right a").toggle();
+    $("#signed-in-user").text("");
     //clear userData
     userData = undefined;
     userVote = undefined;
@@ -331,6 +334,7 @@ let postDownVote = function() {
 let onLike = function() {
 
   if (!userData) {
+    $('#sign-in-alrt').modal('show');
     throw 'No user signed in';
   }
   if (!artData) {
@@ -339,18 +343,20 @@ let onLike = function() {
 
   if (!userVote) {
     postUpVote();
-    getRandomImage();
+
+    window.setTimeout(getRandomImage, 500);
   } else if (userVote.vote) {
     deleteVote();
   } else if (!userVote.vote) {
     patchVote(true);
-    getRandomImage();
+    window.setTimeout(getRandomImage, 500);
   }
 };
 
 let onDislike = function() {
 
   if (!userData) {
+    $('#sign-in-alrt').modal('show');
     throw 'No user signed in';
   }
   if (!artData) {
@@ -359,10 +365,10 @@ let onDislike = function() {
 
   if (!userVote) {
     postDownVote();
-    getRandomImage();
+    window.setTimeout(getRandomImage, 500);
   } else if (userVote.vote) {
     patchVote(false);
-    getRandomImage();
+    window.setTimeout(getRandomImage, 500);
   } else if (!userVote.vote) {
     deleteVote();
   }
@@ -373,6 +379,8 @@ let onDislike = function() {
 /*######################### EXECUTING CODE ###################################*/
 
 $(function() {
+
+  getRandomImage();
 
   map.initializeMap();
 
@@ -400,7 +408,7 @@ $(function() {
   });
 
   //for sign-out
-  $("#signoutbtn").on('click', function() {
+  $("#sign-out-btn").on('click', function() {
     if (!userData) {
       throw "no user signed in";
     }
