@@ -6,6 +6,7 @@
 // use require without a reference to ensure a file is bundled
 let map = require('./map.js');
 let Hammer = require('hammerjs');
+let Handlebars = require('handlebars')
 let BASE_URL = require('./myApp.js').BASE_URL
 
 //TODO remember to change this when deployed...
@@ -108,6 +109,30 @@ let getRandomImage = function() {
 
 };
 
+let artIndex = function(query) {
+
+  //two methods: one for signed in, one for not:
+  //TODO refactor into two functions?
+
+  return $.ajax({
+    headers: {
+      Authorization: 'Token token=' + userData.token,
+    },
+    type: "GET",
+    url: BASE_URL + "/arts",
+    data: {
+      myart: query,
+    }
+  }).done(function(responseData) {
+    console.log(responseData);
+  }).fail(function(jqxhr) {
+    console.error(jqxhr);
+  });
+
+};
+
+
+
 let afterRandomImageDo = function(responseData) {
 
   if (responseData.art.my_vote) {
@@ -150,6 +175,8 @@ as an argument?
 //     console.error(jqxhr)
 //   })
 // };
+
+/* USER ACTIONS */
 let signIn = function(formData) {
 
   //TODO handle cases where user already signed in
@@ -216,7 +243,7 @@ let signUp = function(formData) {
   });
 };
 
-
+/* VOTE ACTIONS */
 let signOut = function() {
 
   console.log(userData.token);
@@ -246,6 +273,8 @@ let signOut = function() {
 
 //TODO THIS
 //TODO change to query string instead of data?
+
+
 let patchVote = function(bool) {
   if (!userData) {
     throw 'no user signed in';
@@ -375,6 +404,29 @@ let onDislike = function() {
 
 };
 
+let displaySwiped = function(artData) {
+
+  let formatedArts = artData.arts.map(function(cV, i, a){
+    // return parseImageUrl(cV.url);
+    cV.url = parseImageUrl(cV.url);
+    return cV;
+  });
+
+  $(".gallery").empty();
+
+  $.get("assets/handlebars/show-swiped-images.handlebars", function(hbTemplate){
+    let template = Handlebars.compile(hbTemplate);
+    let html = template(formatedArts);
+    console.log(html)
+    console.log("fart")
+    $(".gallery").append(html);
+  });
+  // let template = Handlebars.compile(require("../handlebars/show-swiped-images.handlebars").html());
+  // let html = template(formatedArts);
+  // $(".my-swipes").append(html);
+};
+
+
 
 /*######################### EXECUTING CODE ###################################*/
 
@@ -387,6 +439,15 @@ $(function() {
   $("#getImage").on('click', function() {
     getRandomImage().then(responseData => map.codeAddress(responseData.art.location));
   });
+
+  $("#get-liked").on('click', function() {
+    artIndex('liked').then(responseData => displaySwiped(responseData));
+  });
+
+  $("#get-disliked").on('click', function() {
+    artIndex('disliked').then(responseData => displaySwiped(responseData));
+  });
+
 
   // //to retrieve votes on imageUrl
   // $("#votesButton").on('click', getVotesOnArt);
@@ -414,6 +475,15 @@ $(function() {
     }
     signOut();
   });
+
+  // For My Swipes
+  $("#my-swipes").on('click', function() {
+
+    $(".swipe-page").toggle();
+    $(".my-swipes").toggle();
+
+
+  })
 
   //on "like"
   $("#likeButton").on('click', onLike);
@@ -447,7 +517,9 @@ $(function() {
 
   //swipe listener
   let swipeBinder = new Hammer($("#art")[0]);
-  $('#art').on('dragstart', function(event) { event.preventDefault(); });
+  $('#art').on('dragstart', function(event) {
+    event.preventDefault();
+  });
   swipeBinder.on('swipeleft', function(e) {
     onDislike();
   });
