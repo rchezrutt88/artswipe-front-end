@@ -24,43 +24,13 @@
         <li><p class="navbar-text" id="signed-in-user"></p></li>
         <li><a href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a></li>
         <li><a href="#" data-toggle="modal" data-target="#signinModal">Log In</a></li>
+        <li><a href="#" style="display:none" id="my-swipes">My Swipes</a></li>
         <li><a href="#" style="display:none" id="sign-out-btn">Sign Out</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- <nav class="navbar navbar-inverse">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <span class="navbar-brand" id="brand">ArtSwipe</span>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#signinModal">Login</button>
-          </li>
-          <li>
-            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#signupModal">Sign up</button>
-          </li>
-          <li>
-            <button type="button" class="btn btn-default navbar-btn" id="signoutbtn">Sign out</button>
-          </li>
-          <li>
-            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#changePassModal" id="changepassbtn">Change password</button>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav" id="leftBar">
-
-        </ul>
-      </div>
-      /.nav-collapse
-    </div>
-  </nav> -->
+<div class="swipe-page">
 
 
   <h1 id="title"></h1>
@@ -94,6 +64,26 @@
 
   </div>
   <div id='map'></div>
+
+  </div>
+
+<!-- MY SWIPES PAGE START  -->
+
+  <div class="my-swipes" style="display:none">
+
+    <div class="gallery">
+
+    </div>
+
+    <button type="button" name="button" id="get-liked">get liked art</button>
+    <button type="button" name="button" id="get-disliked">get disliked art</button>
+
+  </div>
+
+  <!-- MY SWIPES PAGE ENDS -->
+
+
+  <!-- MODALS -->
 
   <div class="modal fade" id="sign-in-alrt">
     <div class="modal-dialog modal-sm">
