@@ -208,7 +208,7 @@ let signIn = function(formData) {
     //display user email in navbar
     // $("#leftBar").append("<li><p class='navbar-text'>Signed in as " + userEmail + "</p></li>");
     $("#signed-in-user").text("Signed in as " + userEmail);
-    $(".navbar-right a").toggle();
+    $(".navbar-right .on-sign-in").toggle();
 
     //hide modal
     $("#signinModal").modal("hide");
@@ -476,13 +476,15 @@ $(function() {
     signOut();
   });
 
+  //TODO have this toggle navbar from My Swipes to Keep Swiping TODO
   // For My Swipes
-  $("#my-swipes").on('click', function() {
+  $(".on-see-swipes").on('click', function() {
 
     $(".swipe-page").toggle();
     $(".my-swipes").toggle();
 
-
+    // $("$my-swipes").toggle();
+    $(".on-see-swipes").toggle();
   })
 
   //on "like"
