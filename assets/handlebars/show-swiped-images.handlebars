@@ -1,8 +1,15 @@
 {{#each this}}
-<div class="img">
+
+<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+    <a class="thumbnail" href="#">
+        <img class="img-responsive" src="{{url}}" alt="">
+    </a>
+</div>
+
+<!-- <div class="img">
   <a target="_blank" href="{{url}}">
     <img src="{{url}}" alt="Forest" width="300" height="200">
   </a>
   <div class="desc">{{title}}</div>
-</div>
+</div> -->
 {{/each}}

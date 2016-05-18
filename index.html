@@ -21,7 +21,9 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><p class="navbar-text" id="signed-in-user"></p></li>
+        <li>
+          <p class="navbar-text" id="signed-in-user"></p>
+        </li>
         <li><a href="#" data-toggle="modal" data-target="#signupModal" class="on-sign-in">Sign Up</a></li>
         <li><a href="#" data-toggle="modal" data-target="#signinModal" class="on-sign-in">Log In</a></li>
         <li><a href="#" style="display:none" id="my-swipes" class="on-sign-in on-see-swipes">My Swipes</a></li>
@@ -31,11 +33,11 @@
     </div>
   </nav>
 
-<div class="swipe-page">
+  <div class="swipe-page">
 
 
-  <h1 id="title"></h1>
-  <h3 id="distance"></h2>
+    <h1 id="title"></h1>
+    <h3 id="distance"></h2>
 
   <div class="art-container">
     <img class="img-rounded" id="art" alt="http://www.wga.hu/" width="30%" height="100%">
@@ -72,16 +74,31 @@
 
   <div class="my-swipes" style="display:none">
 
-    <div class="gallery">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 text-center">
+          <button type="button" name="button" class="btn btn-success" id="get-liked">get liked art</button>
+          <button type="button" name="button" class="btn btn-danger" id="get-disliked">get disliked art</button>
+        </div>
+      </div>
+
+      <div class="row gallery"></div>
 
     </div>
 
-    <button type="button" name="button" id="get-liked">get liked art</button>
-    <button type="button" name="button" id="get-disliked">get disliked art</button>
-
   </div>
-
   <!-- MY SWIPES PAGE ENDS -->
+<!--
+  <div class="container gallery-page" style="display:none">
+
+      <div class="row">
+
+          <div class="col-lg-12">
+              <h1 class="page-header">Thumbnail Gallery</h1>
+          </div>
+
+
+      </div> -->
 
 
   <!-- MODALS -->

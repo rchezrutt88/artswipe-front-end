@@ -418,7 +418,6 @@ let displaySwiped = function(artData) {
     let template = Handlebars.compile(hbTemplate);
     let html = template(formatedArts);
     console.log(html)
-    console.log("fart")
     $(".gallery").append(html);
   });
   // let template = Handlebars.compile(require("../handlebars/show-swiped-images.handlebars").html());
@@ -432,18 +431,23 @@ let displaySwiped = function(artData) {
 
 $(function() {
 
+  // initialize with random image
   getRandomImage();
 
+  // initialize map
   map.initializeMap();
 
+  // retrieve random image
   $("#getImage").on('click', function() {
     getRandomImage().then(responseData => map.codeAddress(responseData.art.location));
   });
 
+  // retrieve all images user has liked
   $("#get-liked").on('click', function() {
     artIndex('liked').then(responseData => displaySwiped(responseData));
   });
 
+  // retrieve all images user has disliked
   $("#get-disliked").on('click', function() {
     artIndex('disliked').then(responseData => displaySwiped(responseData));
   });
@@ -476,15 +480,14 @@ $(function() {
     signOut();
   });
 
-  //TODO have this toggle navbar from My Swipes to Keep Swiping TODO
+
   // For My Swipes
   $(".on-see-swipes").on('click', function() {
 
     $(".swipe-page").toggle();
     $(".my-swipes").toggle();
-
-    // $("$my-swipes").toggle();
     $(".on-see-swipes").toggle();
+
   })
 
   //on "like"
@@ -493,7 +496,7 @@ $(function() {
   $("#dislikeButton").on('click', onDislike);
 
 
-  //listens for keys
+  //listens for key strokes
   $(this).keydown(function(e) {
 
     switch (e.keyCode) {
