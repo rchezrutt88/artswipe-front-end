@@ -243,7 +243,6 @@ let signUp = function(formData) {
   });
 };
 
-/* VOTE ACTIONS */
 let signOut = function() {
 
   console.log(userData.token);
@@ -272,10 +271,7 @@ let signOut = function() {
   });
 };
 
-//TODO throw error for no art
-
-//TODO THIS
-//TODO change to query string instead of data?
+/* VOTE ACTIONS */
 
 
 let patchVote = function(bool) {
@@ -417,15 +413,19 @@ let displaySwiped = function(artData) {
 
   $(".gallery").empty();
 
-  $.get("assets/handlebars/show-swiped-images.handlebars", function(hbTemplate){
-    let template = Handlebars.compile(hbTemplate);
-    let html = template(formatedArts);
-    console.log(html)
-    $(".gallery").append(html);
-  });
-  // let template = Handlebars.compile(require("../handlebars/show-swiped-images.handlebars").html());
-  // let html = template(formatedArts);
-  // $(".my-swipes").append(html);
+
+  //XXX alternate method here using AJAX. not clear webpack loader will always work?
+
+  // $.get("assets/handlebars/show-swiped-images.handlebars", function(hbTemplate){
+  //   let template = Handlebars.compile(hbTemplate);
+  //   let html = template(formatedArts);
+  //   $(".gallery").append(html);
+  // });
+
+  let template = require("../handlebars/show-swiped-images.handlebars");
+  let html = template(formatedArts);
+  $(".gallery").append(html);
+
 };
 
 
