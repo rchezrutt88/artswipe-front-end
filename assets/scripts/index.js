@@ -257,7 +257,10 @@ let signOut = function() {
   }).done(function(responseData) {
     console.log(responseData);
     //remove user details from nav bar
-    $(".navbar-right a").toggle();
+    $(".on-sign-in").toggle();
+    $(".on-see-swipes").toggle();
+    $(".swipe-page").toggle(true);
+    $(".my-swipes").toggle(false);
     $("#signed-in-user").text("");
     //clear userData
     userData = undefined;
